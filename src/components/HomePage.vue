@@ -2,7 +2,9 @@
     <div class="container">
         <div class="header">
             <div class="settings" :class="logoutClass">
-                <a class="exitButton" @click.prevent="logout" href="#">Exit</a>
+                <a class="exitButton" @click.prevent="logout" href="#">
+                    <i class="fas fa-power-off"></i>
+                </a>
             </div>
         </div>
         <div class="feature">
@@ -19,6 +21,11 @@ export default {
     name: 'HomePage',
     components: {
         ChatHistory
+    },
+    data(){
+        return {
+            username : localStorage.getItem('username')
+        }
     },
     computed: {
     },
@@ -66,13 +73,13 @@ export default {
         text-decoration: none;
         color: black;
         padding: 10px;
-        border-radius: 5px;
+        border-radius: 100px;
         background-color: rgba(250, 235, 215, 0.298);
         border: 1px solid rgba(0, 0, 0, 0.519);
         transition: background 0.5s ease;
     }
     .exitButton:hover {
-        background-color: rgba(156, 246, 176, 0.512);
+        background-color: rgba(246, 156, 156, 0.786);
         cursor: pointer;
     }
 

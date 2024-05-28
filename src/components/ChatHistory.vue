@@ -4,8 +4,10 @@
       Chat:
     </div>
     <div class="chatHistory">
-      <div class="messages" v-for="message in allMessages" :key="message.date">
-        <strong class="message">{{ message.username }}:</strong> {{ message.message }}
+      <div v-for="message in allMessages" :key="message.date">
+        <div class="messages" :style="{ background: messageColor(message) }">
+          <strong class="message">{{ message.username }}:</strong> {{ message.message }}
+        </div>
       </div>
     </div>
     <div class="chatInput">
@@ -22,58 +24,73 @@ import io from 'socket.io-client';
 export default {
   data() {
     return {
-      message: '',
-      socket: null
+      username: localStorage.getItem('username'),
+      message: '', // Kullanıcının girdiği mesajı saklamak için veri
+      socket: null // Socket.IO bağlantısını tutmak için değişken
     };
   },
   computed: {
-    ...mapGetters(['allMessages'])
+    ...mapGetters(['allMessages']) // Vuex'den tüm mesajları almak için
   },
   methods: {
-    ...mapActions(['sendMessages']),
+    ...mapActions(['sendMessages']), // Vuex eylemlerini kullanmak için
     initializeSocket() {
-      this.socket = io('http://172.20.10.2:3131');
+      // Socket.IO bağlantısını başlatmak için
+      this.socket = io('http://172.20.10.2:8080');
 
+      // Sunucudan chat geçmişini almak için
       this.socket.on('chatHistory', (messages) => {
-        this.$store.commit('SET_MESSAGES', messages);
+        this.$store.commit('SET_MESSAGES', messages); // Vuex'deki mesajları günceller
       });
 
+      // Yeni bir mesaj alındığında
       this.socket.on('newMessage', (message) => {
-        this.$store.commit('ADD_MESSAGE', message);
+        this.$store.commit('ADD_MESSAGE', message); // Vuex'deki mesajları günceller
       });
 
+      // Bağlantı başarılı olduğunda
       this.socket.on('connect', () => {
-        console.log('Socket.IO connection opened');
+        console.log('Socket.IO connection opened'); // Konsola bağlantı başarılı mesajı yazdırılır
       });
 
+      // Bağlantı kesildiğinde
       this.socket.on('disconnect', () => {
-        console.log('Socket.IO connection closed');
+        console.log('Socket.IO connection closed'); // Konsola bağlantı kesildi mesajı yazdırılır
       });
 
+      // Hata oluştuğunda
       this.socket.on('error', (error) => {
-        console.error('Socket.IO error', error);
+        console.error('Socket.IO error', error); // Konsola hata mesajı yazdırılır
       });
     },
     sendMessage() {
+      // Gönderilecek mesajın verisi hazırlanır
       const messageData = {
-        username: localStorage.getItem('username'),
-        message: this.message
+        username: localStorage.getItem('username'), // Kullanıcı adı localStorage'dan alınır
+        message: this.message // Kullanıcının girdiği mesaj
       };
 
+      // Socket.IO bağlantısı açıksa
       if (this.socket && this.socket.connected) {
+        // sendMessage olayı tetiklenir ve mesaj gönderilir
         this.socket.emit('sendMessage', messageData);
-        this.message = ''; // Mesaj gönderildikten sonra giriş kutusunu temizler
+        this.message = ''; // Mesaj gönderildikten sonra giriş kutusu temizlenir
       } else {
-        console.error('Socket.IO connection is not open');
+        console.error('Socket.IO connection is not open'); // Hata mesajı yazdırılır
       }
+    },
+    messageColor(message) {
+      return this.username === message.username ? '#c6d5e0cd' : '#4f8db93f';
     }
   },
   mounted() {
-    this.$store.dispatch('fetchMessages');
+    // Socket.IO bağlantısını başlatmak için
     this.initializeSocket();
   }
 };
 </script>
+
+
 
 <style scoped>
   .chat-feature {
@@ -91,7 +108,7 @@ export default {
     flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
-    background-color: #5bac9e6b;
+    background-color: #3a524e45;
     border-radius: 20px;
     display: flex;
     width: 100%;
@@ -103,7 +120,7 @@ export default {
     margin-bottom: 20px;
     margin-left: 10px;
     font-size: 14px;
-    background-color: #c5d6d2a0;
+    background-color: #c6d5e0cd;
     padding: 5px;
     border-radius: 5px;
   }
@@ -132,6 +149,9 @@ export default {
   .textButton:hover {
     background-color: rgba(156, 246, 176, 0.512);
     cursor: pointer;
+  }
+  .colorBlack{
+    color: #13e4c26b;
   }
   </style>
   
