@@ -6,7 +6,7 @@
     <div class="chatHistory">
       <div v-for="message in allMessages" :key="message.date">
         <div class="messages" :style="{ background: messageColor(message) }">
-          <strong class="message">{{ message.username }}:</strong> {{ message.message }}
+          <strong class="message">{{ message.username }}</strong> {{ message.message }}
         </div>
       </div>
     </div>
@@ -117,15 +117,18 @@ export default {
     align-items: start;
   }
   .messages {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
     margin-left: 10px;
-    font-size: 14px;
+    font-size: 13px;
     background-color: #c6d5e0cd;
     padding: 5px;
     border-radius: 5px;
   }
   .message {
-    font-size: 15px;
+    font-size: 13px;
+    margin-bottom: 2px;
   }
   .chatInput {
     display: flex;
