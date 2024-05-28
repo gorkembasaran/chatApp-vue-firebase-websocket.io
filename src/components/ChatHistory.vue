@@ -36,7 +36,7 @@ export default {
     ...mapActions(['sendMessages']), // Vuex eylemlerini kullanmak için
     initializeSocket() {
       // Socket.IO bağlantısını başlatmak için
-      this.socket = io('http://172.20.10.2:8080');
+      this.socket = io('http://localhost:8080');
 
       // Sunucudan chat geçmişini almak için
       this.socket.on('chatHistory', (messages) => {

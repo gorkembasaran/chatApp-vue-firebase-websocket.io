@@ -198,7 +198,7 @@ const store = createStore({
     },
     initializeSocket({ commit }) {
       // Socket.IO bağlantısı oluşturulur
-      const socket = io('http://172.20.10.2:8080');
+      const socket = io('http://localhost:8080/');
     
       // Sunucudan alınan tüm sohbet geçmişini Vuex state'ine kaydeden olay dinleyicisi
       socket.on('chatHistory', (messages) => {
