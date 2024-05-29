@@ -1,23 +1,23 @@
-// require: Includes and use external modules or files
-// const: a keyword used to declare a variable that cannot be reassigned a new value.
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
+// require: Includes and use external modules or files
+// const: a keyword used to declare a variable that cannot be reassigned a new value.
 
 // Express uygulamasını oluşturuyoruz.
 // Creates Express app
 const app = express();
 
 // Express uygulamasını http sunucusuna bağlıyoruz.
-// Connects Express app to the http server
+// Connects Express app to http server
 const server = http.createServer(app);
 
 // Oluşturduğumuz http sunucusu üzerinde Socket.IO bağlantısını kuruyoruz.
 // Creates an SocketIO connection on the http server we created
 const io = socketIo(server, {
   // CORS ayarları. Tüm isteklere herhangi bir kaynaktan izin verilir.
-  // CORS configs. Accepts all requests from a source
+  // CORS configs. Accepts all requests from any source
   cors: {
     origin: '*',
   }
